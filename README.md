@@ -159,33 +159,37 @@ the `wL2coef` metric.
 
 ## List of metrics
 
-| Metric | Module | Description |
-|---|---|---|
-| `MSE` | `errors` | Mean squared error between candidate and ground-truth solutions |
-| `nMSE` | `errors` | MSE normalized by the ground truth's squared magnitude |
-| `nMAE` | `errors` | Mean absolute error normalized by the ground truth's magnitude |
-| `n_utMSE` | `errors` | Normalized MSE on the residual $u_t$ (RHS) instead of $u$ |
-| `fMSE` | `errors` | Mean squared error in Fourier space, over the meaningful wavenumber band |
-| `rollout` | `errors` | Time-averaged L2 error between candidate and ground-truth trajectories |
-| `nL2coef` | `coef` | Normalized L2 error between candidate and ground-truth coefficient vectors |
-| `nL1coef` | `coef` | Normalized L1 error between candidate and ground-truth coefficient vectors |
-| `maxerror` | `coef` | Largest relative coefficient error over the ground truth's nonzero terms |
-| `NDCG` | `coef` | Ranking similarity of coefficient magnitudes (discounted cumulative gain ratio) |
-| `wL2coef` | `coef` | L2 coefficient error weighted by each term's sensitivity ($\partial U/\partial \alpha$) |
-| `Tanimoto` | `coef` | Tanimoto/Jaccard-style similarity between coefficient vectors |
-| `Sterms` | `sparsity` | Fraction of nonzero coefficients relative to the full candidate dictionary |
-| `ExpTree` | `sparsity` | Size (node count) of the equation's expression tree |
-| `Score` | `tradeoff` | Accuracy-per-complexity gain of the candidate relative to a baseline PDE |
-| `Reward1` | `tradeoff` | Sparsity-weighted R² fit on the $u_t$ residual |
-| `Reward2` | `tradeoff` | Sparsity/depth-penalized inverse residual error |
-| `AICc` | `tradeoff` | Corrected Akaike Information Criterion (fit vs. sparsity trade-off) |
-| `BIC` | `tradeoff` | Bayesian Information Criterion (fit vs. sparsity trade-off) |
-| `MDL_Fey` | `tradeoff` | AI-Feynman-style minimum description length score |
-| `MDL_Sym` | `tradeoff` | SymLang-style minimum description length score |
-| `IC_nMAE` | `generalization` | nMAE between candidate and ground truth under an unseen initial condition |
-| `rollout_OOD` | `generalization` | Rollout error evaluated over a longer (out-of-distribution) horizon |
-| `Conv_t` | `generalization` | Numerical convergence of the candidate PDE as the time step shrinks |
-| `Conv_x` | `generalization` | Numerical convergence of the candidate PDE as the spatial grid is refined |
+Notation follows the paper: $u$/$\hat u$ are the ground-truth/candidate solution fields,
+$\alpha$/$\hat\alpha$ their coefficient vectors, $\Theta$ the candidate term dictionary, and
+$\mathcal{S}(\hat\alpha) = \{\Theta_i : \hat\alpha_i \neq 0\}$ the candidate's active terms.
+
+| Metric | Module | Formula | Description |
+|---|---|---|---|
+| `MSE` | `errors` | $\frac{1}{n}\sum_i (\hat u_i - u_i)^2$ | Mean squared error between candidate and ground-truth solutions |
+| `nMSE` | `errors` | $\frac{\sum_i (\hat u_i - u_i)^2}{\sum_i u_i^2}$ | MSE normalized by the ground truth's squared magnitude |
+| `nMAE` | `errors` | $\frac{\sum_i \lvert \hat u_i - u_i \rvert}{\sum_i \lvert u_i \rvert}$ | Mean absolute error normalized by the ground truth's magnitude |
+| `n_utMSE` | `errors` | $\frac{\sum_i (\hat u_{t,i} - u_{t,i})^2}{\sum_i u_{t,i}^2}$ | Normalized MSE on the residual $u_t$ (RHS) instead of $u$ |
+| `fMSE` | `errors` | $\frac{1}{N_T}\sum_t \frac{\sum_{k} \lvert \mathcal{F}(\hat u)(t,k) - \mathcal{F}(u)(t,k) \rvert^2}{k_{max}-k_{min}+1}$ | Mean squared error in Fourier space, over the meaningful wavenumber band |
+| `rollout` | `errors` | $\frac{1}{N_T}\sum_{i=1}^{N_T} \lVert \hat u(i\delta_t,\cdot) - u(i\delta_t,\cdot) \rVert_{L^2(\Omega)}^2$ | Time-averaged L2 error between candidate and ground-truth trajectories |
+| `nL2coef` | `coef` | $\frac{\lVert \alpha - \hat\alpha \rVert_2^2}{\lVert \alpha \rVert_2^2}$ | Normalized L2 error between candidate and ground-truth coefficient vectors |
+| `nL1coef` | `coef` | $\frac{\lVert \alpha - \hat\alpha \rVert_1}{\lVert \alpha \rVert_1}$ | Normalized L1 error between candidate and ground-truth coefficient vectors |
+| `maxerror` | `coef` | $\max_{i:\alpha_i \neq 0} \frac{\lvert \alpha_i - \hat\alpha_i \rvert}{\lvert \alpha_i \rvert}$ | Largest relative coefficient error over the ground truth's nonzero terms |
+| `NDCG` | `coef` | $\frac{DCG(rank(\hat\alpha))}{DCG(rank(\alpha))}$, with $DCG(r) = \sum_i \frac{r_i}{\log_2(i+1)}$ | Ranking similarity of coefficient magnitudes (discounted cumulative gain ratio) |
+| `wL2coef` | `coef` | $\frac{\sum_i w_i(\alpha_i - \hat\alpha_i)^2}{\sum_i w_i}$, with $w_i \propto \lVert \partial u/\partial \alpha_i \rVert_2^2$ | L2 coefficient error weighted by each term's sensitivity |
+| `Tanimoto` | `coef` | $\frac{\alpha^\top \hat\alpha}{\lVert \alpha \rVert_2^2 + \lVert \hat\alpha \rVert_2^2 - \alpha^\top \hat\alpha}$ | Tanimoto/Jaccard-style similarity between coefficient vectors |
+| `Sterms` | `sparsity` | $1 - \frac{\lvert \{ \hat\alpha_i = 0 \} \rvert}{\lvert \Theta \rvert}$ (or $\infty$ if $\hat\alpha = 0$) | Fraction of nonzero coefficients relative to the full candidate dictionary |
+| `ExpTree` | `sparsity` | $size\left(ExpTree(\hat\alpha^\top \Theta)\right)$ | Size (node count) of the equation's expression tree |
+| `Score` | `tradeoff` | $\frac{-\Delta \log(nMAE)}{\Delta C}$ | Accuracy-per-complexity gain of the candidate relative to a baseline PDE |
+| `Reward1` | `tradeoff` | $\left(1 - c_0 \log_{10}\lvert \mathcal{S}(\hat\alpha) \rvert\right) \times \left(1 - \frac{\sum_i (u_{t,i} - \Theta_i^\top \hat\alpha)^2}{\sum_i (u_{t,i} - \bar u_t)^2}\right)$ | Sparsity-weighted R² fit on the $u_t$ residual |
+| `Reward2` | `tradeoff` | $\frac{1 - \xi_1 \lvert \mathcal{S}(\hat\alpha) \rvert - \xi_2 \, depth(ExpTree(\hat\alpha^\top \Theta))}{1 + \lVert u_t - \hat\alpha^\top \Theta \rVert_2^2}$ | Sparsity/depth-penalized inverse residual error |
+| `AICc` | `tradeoff` | $n \log \frac{\lVert u_t - \Theta^\top \hat\alpha \rVert_2^2}{n} + 2\lvert \mathcal{S}(\hat\alpha) \rvert$ | Corrected Akaike Information Criterion (fit vs. sparsity trade-off) |
+| `BIC` | `tradeoff` | $\log(n)\lvert \mathcal{S}(\hat\alpha) \rvert - 2\log(L(\mathcal{T},\hat\alpha))$ | Bayesian Information Criterion (fit vs. sparsity trade-off) |
+| `MDL_Fey` | `tradeoff` | $\log_2 N(\hat\alpha) + \lambda \log_2\left[\max\left(1, \frac{err(\hat\alpha)}{\epsilon_d}\right)\right]$ | AI-Feynman-style minimum description length score |
+| `MDL_Sym` | `tradeoff` | $-\log p(\mathcal{T} \mid e(\Theta^\top \hat\alpha)) + \lambda \, len\left(ExpTree(\Theta^\top \hat\alpha)\right)$ | SymLang-style minimum description length score |
+| `IC_nMAE` | `generalization` | $nMAE(\hat u, u)$ resimulated under an out-of-distribution initial condition | nMAE between candidate and ground truth under an unseen initial condition |
+| `rollout_OOD` | `generalization` | $\frac{1}{N_T'}\sum_{i=1}^{N_T'} \lVert \hat u(i\delta_t,\cdot) - u(i\delta_t,\cdot) \rVert_{L^2(\Omega)}^2$, with $N_T' \gg N_T$ | Rollout error evaluated over a longer (out-of-distribution) horizon |
+| `Conv_t` | `generalization` | $\lim_{\delta_t \rightarrow 0} \lVert \hat u - \hat u_{\delta_t} \rVert$ | Numerical convergence of the candidate PDE as the time step shrinks |
+| `Conv_x` | `generalization` | $\lim_{h \rightarrow 0} \lVert \hat u - \hat u_h \rVert$ | Numerical convergence of the candidate PDE as the spatial grid is refined |
 
 Each module name above can be passed directly to `--metric` to select all of its metrics at
 once (e.g. `--metric errors`), as described in [Computing metrics](#computing-metrics).

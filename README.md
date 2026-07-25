@@ -6,7 +6,11 @@ Code associated with the paper:
 > Advancement**
 > Baptiste Mathevon, Farah Cherfaoui, Amaury Habrard, Marc Sebban
 
-**Abstract.** Partial differential equation (PDE) discovery aims to identify from data the
+<details>
+<summary><b>Abstract</b></summary>
+<br>
+
+Partial differential equation (PDE) discovery aims to identify from data the
 governing law of a physical system. Constituting a cornerstone of scientific advancement, it
 has become during the past decade a major line of research in the rapidly evolving field of
 Physics-informed Machine Learning (PiML). Among the remaining open problems to address in this
@@ -25,6 +29,8 @@ practices, before sketching promising future lines of research in this field. We
 this paper is intended both for ML experts who design new PDE discovery algorithms and for
 users of these methods aiming, in real applications, to discover and validate well-founded
 scientific laws.
+
+</details>
 
 Post-hoc evaluation of PDE discovery: a suite of metrics and diagnostic plots for assessing
 the quality of a *discovered* PDE against a known ground-truth PDE.

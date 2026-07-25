@@ -159,9 +159,10 @@ the `wL2coef` metric.
 
 ## List of metrics
 
-Notation follows the paper: $u$/$\hat u$ are the ground-truth/candidate solution fields,
-$\alpha$/$\hat\alpha$ their coefficient vectors, $\Theta$ the candidate term dictionary, and
-$\mathcal{S}(\hat\alpha) = \{\Theta_i : \hat\alpha_i \neq 0\}$ the candidate's active terms.
+Notation follows the paper: $u$ and $\hat{u}$ are the ground-truth and candidate solution
+fields, $\alpha$ and $\hat{\alpha}$ their coefficient vectors, $\Theta$ the candidate term
+dictionary, and $\mathcal{S}(\hat{\alpha}) = \{\Theta_i : \hat{\alpha}_i \neq 0\}$ the
+candidate's active terms.
 
 | Metric | Module | Formula | Description |
 |---|---|---|---|
@@ -181,15 +182,15 @@ $\mathcal{S}(\hat\alpha) = \{\Theta_i : \hat\alpha_i \neq 0\}$ the candidate's a
 | `ExpTree` | `sparsity` | $size\left(ExpTree(\hat\alpha^\top \Theta)\right)$ | Size (node count) of the equation's expression tree |
 | `Score` | `tradeoff` | $\frac{-\Delta \log(nMAE)}{\Delta C}$ | Accuracy-per-complexity gain of the candidate relative to a baseline PDE |
 | `Reward1` | `tradeoff` | $\left(1 - c_0 \log_{10}\lvert \mathcal{S}(\hat\alpha) \rvert\right) \times \left(1 - \frac{\sum_i (u_{t,i} - \Theta_i^\top \hat\alpha)^2}{\sum_i (u_{t,i} - \bar u_t)^2}\right)$ | Sparsity-weighted R² fit on the $u_t$ residual |
-| `Reward2` | `tradeoff` | $\frac{1 - \xi_1 \lvert \mathcal{S}(\hat\alpha) \rvert - \xi_2 \, depth(ExpTree(\hat\alpha^\top \Theta))}{1 + \lVert u_t - \hat\alpha^\top \Theta \rVert_2^2}$ | Sparsity/depth-penalized inverse residual error |
+| `Reward2` | `tradeoff` | $\frac{1 - \xi_1 \lvert \mathcal{S}(\hat\alpha) \rvert - \xi_2 depth(ExpTree(\hat\alpha^\top \Theta))}{1 + \lVert u_t - \hat\alpha^\top \Theta \rVert_2^2}$ | Sparsity/depth-penalized inverse residual error |
 | `AICc` | `tradeoff` | $n \log \frac{\lVert u_t - \Theta^\top \hat\alpha \rVert_2^2}{n} + 2\lvert \mathcal{S}(\hat\alpha) \rvert$ | Corrected Akaike Information Criterion (fit vs. sparsity trade-off) |
 | `BIC` | `tradeoff` | $\log(n)\lvert \mathcal{S}(\hat\alpha) \rvert - 2\log(L(\mathcal{T},\hat\alpha))$ | Bayesian Information Criterion (fit vs. sparsity trade-off) |
 | `MDL_Fey` | `tradeoff` | $\log_2 N(\hat\alpha) + \lambda \log_2\left[\max\left(1, \frac{err(\hat\alpha)}{\epsilon_d}\right)\right]$ | AI-Feynman-style minimum description length score |
-| `MDL_Sym` | `tradeoff` | $-\log p(\mathcal{T} \mid e(\Theta^\top \hat\alpha)) + \lambda \, len\left(ExpTree(\Theta^\top \hat\alpha)\right)$ | SymLang-style minimum description length score |
+| `MDL_Sym` | `tradeoff` | $-\log p(\mathcal{T} \mid e(\Theta^\top \hat\alpha)) + \lambda len\left(ExpTree(\Theta^\top \hat\alpha)\right)$ | SymLang-style minimum description length score |
 | `IC_nMAE` | `generalization` | $nMAE(\hat u, u)$ resimulated under an out-of-distribution initial condition | nMAE between candidate and ground truth under an unseen initial condition |
 | `rollout_OOD` | `generalization` | $\frac{1}{N_T'}\sum_{i=1}^{N_T'} \lVert \hat u(i\delta_t,\cdot) - u(i\delta_t,\cdot) \rVert_{L^2(\Omega)}^2$, with $N_T' \gg N_T$ | Rollout error evaluated over a longer (out-of-distribution) horizon |
 | `Conv_t` | `generalization` | $\lim_{\delta_t \rightarrow 0} \lVert \hat u - \hat u_{\delta_t} \rVert$ | Numerical convergence of the candidate PDE as the time step shrinks |
-| `Conv_x` | `generalization` | $\lim_{h \rightarrow 0} \lVert \hat u - \hat u_h \rVert$ | Numerical convergence of the candidate PDE as the spatial grid is refined |
+| `Conv_x` | `generalization` | $\lim_{\delta_x \rightarrow 0} \lVert \hat u - \hat u_{\delta_x} \rVert$ | Numerical convergence of the candidate PDE as the spatial grid is refined |
 
 Each module name above can be passed directly to `--metric` to select all of its metrics at
 once (e.g. `--metric errors`), as described in [Computing metrics](#computing-metrics).

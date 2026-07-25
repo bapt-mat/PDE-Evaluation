@@ -37,6 +37,8 @@ figures (solution fields, error heatmaps, spectral error, convergence curves).
 Three reference systems are provided: **Burgers' equation**, the **Korteweg-de Vries (KdV)
 equation**, and the **Kuramoto-Sivashinsky (KS) equation**.
 
+### Open questions in the post-hoc evaluation of PDE discovery
+
 ![Open questions in the post-hoc evaluation of PDE discovery](assets/Questions.png)
 
 ## Repository structure

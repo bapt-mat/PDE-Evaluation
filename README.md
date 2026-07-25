@@ -138,8 +138,8 @@ Example rollout-error (`--rollout`) and Fourier-space error (`--fourier`) plots 
 <p>
 <img src="assets/rollout_ks_pde_A.png" width="25%">
 <img src="assets/rollout_ks_pde_B.png" width="25%">
-<img src="assets/fourier_ks_pde_A.png" width="21%">
-<img src="assets/fourier_ks_pde_B.png" width="21%">
+<img src="assets/fourier_ks_pde_A.png" width="22%">
+<img src="assets/fourier_ks_pde_B.png" width="22%">
 </p>
 
 Additional options:

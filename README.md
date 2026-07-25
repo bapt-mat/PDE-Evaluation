@@ -133,6 +133,15 @@ python3 simulation.py --file ks_pde_A.txt
 Produces a side-by-side comparison of the ground truth and candidate solution fields, a
 solution heatmap, and an error heatmap, written to `simulations/` and `errors/`.
 
+Example rollout-error (`--rollout`) and Fourier-space error (`--fourier`) plots for two KS candidates:
+
+<p>
+<img src="assets/rollout_ks_pde_A.png" width="24%">
+<img src="assets/rollout_ks_pde_B.png" width="24%">
+<img src="assets/fourier_ks_pde_A.png" width="24%">
+<img src="assets/fourier_ks_pde_B.png" width="24%">
+</p>
+
 Additional options:
 
 ```

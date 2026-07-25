@@ -35,7 +35,7 @@ scientific laws.
 Post-hoc evaluation of PDE discovery: a suite of metrics and diagnostic plots for assessing
 the quality of a *discovered* PDE against a known ground-truth PDE.
 
-Given a candidate equation, e.g. `u_t = -u·u_x + 0.05·u_xx`, this repository simulates it,
+Given a candidate equation, e.g. $u_t = -u u_x + 0.05 u_{xx}$, this repository simulates it,
 compares it against the reference dynamics, and reports quantitative metrics (accuracy,
 sparsity, coefficient recovery, generalization, trade-off scores) together with diagnostic
 figures (solution fields, error heatmaps, spectral error, convergence curves).
@@ -71,7 +71,7 @@ u_xx: 0.05
 u·u_x: -1.0
 ```
 
-which corresponds to `u_t = 0.05·u_xx - u·u_x`. Supported terms are `u`, `u_x`, `u_xx`,
+which corresponds to $u_t = 0.05 u_{xx} - u u_x$. Supported terms are `u`, `u_x`, `u_xx`,
 `u_xxx`, `u_xxxx` (linear terms), products of two such terms (quadratic terms, e.g. `u·u_x`),
 and `x·u_xx`-style terms (a linear term multiplied by the spatial coordinate). A constant
 offset may be specified with `b: <value>`.
@@ -164,19 +164,19 @@ the `wL2coef` metric.
 | `MSE` | `errors` | Mean squared error between candidate and ground-truth solutions |
 | `nMSE` | `errors` | MSE normalized by the ground truth's squared magnitude |
 | `nMAE` | `errors` | Mean absolute error normalized by the ground truth's magnitude |
-| `n_utMSE` | `errors` | Normalized MSE on the residual `u_t` (RHS) instead of `u` |
+| `n_utMSE` | `errors` | Normalized MSE on the residual $u_t$ (RHS) instead of $u$ |
 | `fMSE` | `errors` | Mean squared error in Fourier space, over the meaningful wavenumber band |
 | `rollout` | `errors` | Time-averaged L2 error between candidate and ground-truth trajectories |
 | `nL2coef` | `coef` | Normalized L2 error between candidate and ground-truth coefficient vectors |
 | `nL1coef` | `coef` | Normalized L1 error between candidate and ground-truth coefficient vectors |
 | `maxerror` | `coef` | Largest relative coefficient error over the ground truth's nonzero terms |
 | `NDCG` | `coef` | Ranking similarity of coefficient magnitudes (discounted cumulative gain ratio) |
-| `wL2coef` | `coef` | L2 coefficient error weighted by each term's sensitivity (`dU/dalpha`) |
+| `wL2coef` | `coef` | L2 coefficient error weighted by each term's sensitivity ($\partial U/\partial \alpha$) |
 | `Tanimoto` | `coef` | Tanimoto/Jaccard-style similarity between coefficient vectors |
 | `Sterms` | `sparsity` | Fraction of nonzero coefficients relative to the full candidate dictionary |
 | `ExpTree` | `sparsity` | Size (node count) of the equation's expression tree |
 | `Score` | `tradeoff` | Accuracy-per-complexity gain of the candidate relative to a baseline PDE |
-| `Reward1` | `tradeoff` | Sparsity-weighted R² fit on the `u_t` residual |
+| `Reward1` | `tradeoff` | Sparsity-weighted R² fit on the $u_t$ residual |
 | `Reward2` | `tradeoff` | Sparsity/depth-penalized inverse residual error |
 | `AICc` | `tradeoff` | Corrected Akaike Information Criterion (fit vs. sparsity trade-off) |
 | `BIC` | `tradeoff` | Bayesian Information Criterion (fit vs. sparsity trade-off) |

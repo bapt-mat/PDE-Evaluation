@@ -136,8 +136,8 @@ solution heatmap, and an error heatmap, written to `simulations/` and `errors/`.
 Example rollout-error (`--rollout`) and Fourier-space error (`--fourier`) plots for two KS candidates:
 
 <p>
-<img src="assets/rollout_ks_pde_A.png" width="24%">
-<img src="assets/rollout_ks_pde_B.png" width="24%">
+<img src="assets/rollout_ks_pde_A.png" width="26%">
+<img src="assets/rollout_ks_pde_B.png" width="26%">
 <img src="assets/fourier_ks_pde_A.png" width="24%">
 <img src="assets/fourier_ks_pde_B.png" width="24%">
 </p>

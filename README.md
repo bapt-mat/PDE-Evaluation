@@ -6,6 +6,26 @@ Code associated with the paper:
 > Advancement**
 > Baptiste Mathevon, Farah Cherfaoui, Amaury Habrard, Marc Sebban
 
+**Abstract.** Partial differential equation (PDE) discovery aims to identify from data the
+governing law of a physical system. Constituting a cornerstone of scientific advancement, it
+has become during the past decade a major line of research in the rapidly evolving field of
+Physics-informed Machine Learning (PiML). Among the remaining open problems to address in this
+domain, the post-hoc evaluation of discovered PDEs raises the particular difficulty of being
+multifaceted. Indeed, it requires jointly considering predictive accuracy, physical
+consistency, interpretability, and out-of-distribution generalization capacity. Given that some
+of these properties are conflicting, it is worth noting that the wide range of existing
+evaluation metrics only partially address the overall problem, potentially leading to overly
+interpreted conclusions about the validity of a presumed new physical theory. From an abundant
+literature spanning machine learning, numerical analysis, information theory or symbolic
+regression, we propose, to our knowledge, the first taxonomy of PDE evaluation metrics, and
+discuss their advantages and limitations in depth. Based on the observation that evaluation is
+often achieved on a case-by-case basis and that a universally accepted methodology remains
+elusive, we further provide recommendations with the aim of promoting standardized and reliable
+practices, before sketching promising future lines of research in this field. We argue that
+this paper is intended both for ML experts who design new PDE discovery algorithms and for
+users of these methods aiming, in real applications, to discover and validate well-founded
+scientific laws.
+
 Post-hoc evaluation of PDE discovery: a suite of metrics and diagnostic plots for assessing
 the quality of a *discovered* PDE against a known ground-truth PDE.
 
@@ -16,6 +36,8 @@ figures (solution fields, error heatmaps, spectral error, convergence curves).
 
 Three reference systems are provided: **Burgers' equation**, the **Korteweg-de Vries (KdV)
 equation**, and the **Kuramoto-Sivashinsky (KS) equation**.
+
+![Open questions in the post-hoc evaluation of PDE discovery](assets/Questions.png)
 
 ## Repository structure
 
